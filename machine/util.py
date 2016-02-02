@@ -11,7 +11,7 @@ def getValFromBits(bits):
 
 def operatorToFunction(op): # [list of four elements in {0, 1}]
     opVal = sum([a * b for (a, b) in zip(op, [8, 4, 2, 1])])
-    if not(0x1 <= opVal <= 0xD):
+    if not(0x1 <= opVal <= 0xF):
         sys.exit('operator doesn\'t exist')
     return opVal
 
@@ -62,7 +62,8 @@ asmDict = {'LOAD': 0x1,
            'ROTATE': 0xA,
            'JUMP': 0xB,
            'HALT': 0xC,
-           'PRINT': 0xD}
+           'PRINT': 0xD,
+           'INT': 0xE}
 
 def spitMachine(asm, asmFile='out.iasm'):
     res = []

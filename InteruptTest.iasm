@@ -1,0 +1,12 @@
+;; Start A4
+LOADV R0 00
+LOADV R1 04 ;; write system call
+LOADV R2 01 ;; set output
+LOADV R3 20 ;; address of string
+LOADV R4 01 ;; length of string
+LOADV R5 41 ;; ASCII counter
+STORE R5 20
+INT 080
+ADD R5 R2 R5 ;; reuse the output register
+JUMP R0 0C
+HALT ;; C000

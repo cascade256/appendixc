@@ -3,6 +3,7 @@ from machine import util
 # from machine import data
 from machine import registers
 import collections
+from machine import interupt_handler as ih
 
 # registers 0-F
 registers = registers.Registers([(x, 0) for x in range(0xF + 1)])
@@ -132,6 +133,10 @@ def PRINT(operands):
           '\nCell 0x{:02X}'.format(util.getValFromBits(XY)) +
           ': 0x{:02X}'.format(memory[util.getValFromBits(XY)]))
 
+def INT(operands):
+    global memory, registers
+    ih.handleInterupt(util.getValFromBits(operands), memory, registers)
+
 # operator v-table
 opDict = {0x1: LOAD,   # LOAD R XY (contents)
           0x2: LOADV,  # LOADV R #XY (value)
@@ -146,9 +151,9 @@ opDict = {0x1: LOAD,   # LOAD R XY (contents)
           0xB: JUMP,   # JUMP R XY
           0xC: HALT,   # HALT
           0xD: PRINT,  # PRINT R XY
-          0xE: None,
+          0xE: INT,
           0xF: None}
-    
+
 def storeProgramInMemory(loc):
     instructions = util.readFromFile(loc)
     i = 0
